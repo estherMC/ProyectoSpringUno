@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans   
+    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+<!-- SPRING-5: mismo caso SPRING-4 pero con archivo properties-->
+<context:property-placeholder location="classpath:datosEmpresa.propiedades"/>
+
+<!-- SPRING-2: creación de la dependencia-->
+<bean id="miInforme" class="es.pildoras.ic.Informe"> </bean>
+
+<!-- SPRING-1: -->
+<bean id="miEmpleado" class="es.pildoras.ic.JefeEmpleado">
+	<!-- SPRING-2: añadimos la dependencia dentro de donde corresponde-->
+	<constructor-arg ref="miInforme"></constructor-arg>
+</bean>
+
+<!-- SPRING-3: -->
+<bean id="miSecretarioEmpleado" class="es.pildoras.ic.SecretarioEmpleado">
+	<!-- SPRING-3: El property será el nombre del método, sin el set y con la primera en minúscula-->
+	<property name="informeNuevo" ref="miInforme"></property>
+
+	<!-- SPRING-4: El property será el nombre del método, sin el set y con la primera en minúscula-->
+	<property name="email" value="secretaria@pildorasinformaticas.com" ></property>
+	<property name="nombreEmpresa" value="Píldoras Informáticas" ></property>
+
+</bean>
+
+
+<bean id="miDirectorEmpleado" class="es.pildoras.ic.DirectorEmpleados">
+	<constructor-arg ref="miInforme"></constructor-arg>
+	<!-- SPRING-4: El property será el nombre del método, sin el set y con la primera en minúscula-->
+<!-- 	<property name="email" value="directorEmpleado@pildorasinformaticas.com" ></property> -->
+<!-- 	<property name="nombreEmpresa" value="Píldoras Informáticas" ></property> -->
+
+	<!-- SPRING-5: Sustituimos dos líneas superiores de SPRING-4 mediante su equivalente con archivo properties-->
+	<property name="email" value="${email}" ></property>
+	<property name="nombreEmpresa" value="${nombreEmpresa}" ></property>
+
+
+</bean>
+
+</beans>
